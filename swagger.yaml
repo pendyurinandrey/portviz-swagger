@@ -1,0 +1,79 @@
+openapi: 3.0.3
+info:
+  title: Portviz API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: statistics
+    description: A set of endpoints which provides portfolio statistics
+paths:
+  /api/v1/statistics/allocation/per-country:
+    get:
+      summary: Get asset allocation per country
+      operationId: allocationPerCountryGET
+      tags:
+        - statistics
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: Returns allocation per country
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllocationPerCountryResponse'
+  /api/v1/statistics/allocation/per-class:
+    get:
+      summary: Get allocation per asset class
+      operationId: allocationPerClassGET
+      tags:
+        - statistics
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: Returns allocation per class
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllocationPerClassResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    AllocationPerCountryEntry:
+      type: object
+      properties:
+        countryName:
+          type: string
+          example: USA
+        amount:
+          type: string
+          example: '10024.53'
+    AllocationPerClassEntry:
+      type: object
+      properties:
+        className:
+          type: string
+          example: Bonds
+        amount:
+          type: string
+          example: '10024.53'
+    AllocationPerCountryResponse:
+      type: object
+      properties:
+        allocation:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationPerCountryEntry'
+    AllocationPerClassResponse:
+      type: object
+      properties:
+        allocation:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationPerClassEntry'
