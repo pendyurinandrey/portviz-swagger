@@ -7,7 +7,29 @@ servers:
 tags:
   - name: statistics
     description: A set of endpoints which provides portfolio statistics
+  - name: users
+    description: A set of endpoints which provides operations with user profile
 paths:
+  /api/v1/users/signin:
+    post:
+      summary: Sign in operation
+      operationId: signin
+      tags:
+        - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInRequest'
+      responses:
+        '200':
+          description: Successfully signed in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignInResponse'
+        '401':
+          description: Unauthorized
   /api/v1/statistics/allocation/per-country:
     get:
       summary: Get asset allocation per country
@@ -23,6 +45,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AllocationPerCountryResponse'
+        '401':
+          description: Unauthorized
   /api/v1/statistics/allocation/per-class:
     get:
       summary: Get allocation per asset class
@@ -38,6 +62,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AllocationPerClassResponse'
+        '401':
+          description: Unauthorized
 
 components:
   securitySchemes:
@@ -45,6 +71,21 @@ components:
       type: http
       scheme: bearer
   schemas:
+    SignInRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: f13dc9b6-146a-4b10-b0a0-3a5fa5a05185
+        password:
+          type: string
+          example: cd9c4712-f90f-44ae-84d7-f19c42cdf03b
+    SignInResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJmMTNkYzliNi0xNDZhLTRiMTAtYjBhMC0zYTVmYTVhMDUxODUiLCJpYXQiOjE1MTYyMzkwMjJ9.x3Pcj6lrxGZbmqnWtq8X1ejnmE8wqQd8I1hlcCFRjow
     AllocationPerCountryEntry:
       type: object
       properties:
