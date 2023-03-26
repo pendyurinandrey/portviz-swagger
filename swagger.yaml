@@ -64,7 +64,23 @@ paths:
                 $ref: '#/components/schemas/AllocationPerClassResponse'
         '401':
           description: Unauthorized
-
+  /api/v1/statistics/balance:
+    get:
+      summary: Get portfolio balance
+      operationId: balanceGET
+      tags:
+        - statistics
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: Returns balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+        '401':
+          description: Unauthorized
 components:
   securitySchemes:
     BearerAuth:
@@ -118,3 +134,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AllocationPerClassEntry'
+    BalanceEntry:
+      type: object
+      properties:
+        monthIndex:
+          type: integer
+          minimum: 1
+          maximum: 12
+          example: 1
+        amount:
+          type: string
+          example: '102345.14'
+    BalanceResponse:
+      type: object
+      properties:
+        balance:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+        currency_iso_code:
+          type: string
+          example: USD
